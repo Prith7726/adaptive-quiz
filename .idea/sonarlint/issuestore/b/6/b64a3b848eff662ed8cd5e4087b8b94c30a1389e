@@ -1,9 +1,0 @@
-
-w
-java:S1611"4Remove the parentheses around the "logout" parameter(ˆºÛŠ8¼«›˜‹2J$b774ac3b-257f-4ab2-9b74-ee6ed54d4141
-‹
-java:S1612"HReplace this lambda with method reference 'LogoutConfigurer::permitAll'.(ˆºÛŠ8¿«›˜‹2J$db6da426-1ef1-4e2a-91e5-f1138e4f65e8
-y
-java:S6437!"6Revoke and change this password, as it is compromised.(«‡…ö8Ã«›˜‹2J$a7bcc87c-2ec8-47e3-aabd-70e10899ca5d
-…
-java:S1874"BRemove this use of "withDefaultPasswordEncoder"; it is deprecated.(þ¤ÂÖ8Ä«›˜‹2J$404f942b-b369-4472-b921-9d24a28393ec
