@@ -1,0 +1,123 @@
+
+[
+  {
+    "id": 1,
+    "question": "What does the control unit do?",
+    "choices": [
+      "holds all the registers",
+      "performs all the calculations in the CPU",
+      "coordinates all the components of the cpu"
+    ],
+    "topic": "maths",
+    "difficulty": "EASY",
+    "answer": "coordinates all the components of the cpu"
+  },
+  {
+    "id": 2,
+    "question": "What does the arithmetic logic unit do?",
+    "choices": [
+      "holds the results of arithmatic calculations",
+      "performs arithmetic and logical operations on data",
+      "coordinates all the components of the CPU"
+    ],
+    "topic": "Structure and function of the processor",
+    "difficulty": "EASY",
+    "answer": "performs arithmetic and logical operations on data"
+  },
+  {
+    "id": 3,
+    "question": "What does the accumulator do?",
+    "choices": [
+      "stores the results of the calculations",
+      "sends control signals to parts of the CPU",
+      "decodes instructions"
+    ],
+    "topic": "Structure and function of the processor",
+    "difficulty": "EASY",
+    "answer": "stores the results of the calculations"
+  },
+  {
+    "id": 4,
+    "question": "What does the current instruction register do?",
+    "choices": [
+      "stores all the instructions that are to be excecuted ",
+      "stores the address of the current instruction to be excecuted",
+      "it temporarily stores the instruction that is currently being decoded or excecuted"
+    ],
+    "topic": "Structure and function of the processor",
+    "difficulty": "EASY",
+    "answer": "it temporarily stores the instruction that is currently being decoded or excecuted"
+  },
+  {
+    "id": 5,
+    "question": "What does the memory address register do?",
+    "choices": [
+      "sends address signals to other parts of the CPU",
+      "stores memory addresses for data that is being fetched or stored",
+      "reads addresses from main memory"
+    ],
+    "topic": "Structure and function of the processor",
+    "difficulty": "EASY",
+    "answer": "stores memory addresses for data that is being fetched or stored"
+  },
+  {
+    "id": 6,
+    "question": "What does the memory data register do?",
+    "choices": [
+      "temporarily holds the data that is being transferred to and from memory",
+      "stores the address of the next piece of data to be fetched",
+      "sends read or write signals to Main memory"
+    ],
+    "topic": "Structure and function of the processor",
+    "difficulty": "EASY",
+    "answer": "temporarily holds the data that is being transferred to and from memory"
+  },
+  {
+    "id": 7,
+    "question": "Name the three buses in a CPU?",
+    "choices": [
+      "control, arithmatic, system",
+      "data, memory, logic",
+      "control, address, data"
+    ],
+    "topic": "Structure and function of the processor",
+    "difficulty": "EASY",
+    "answer": "control, address, data"
+  },
+  {
+    "id": 8,
+    "question": "What does the address bus do?",
+    "choices": [
+      "carries memory addresses that identify where the data is being read from or written to",
+      "sends read or write signals to Main memory",
+      "stores memory addresses for data that is being fetched or stored"
+    ],
+    "topic": "Structure and function of the processor",
+    "difficulty": "EASY",
+    "answer": "carries memory addresses that identify where the data is being read from or written to"
+  },
+  {
+    "id": 9,
+    "question": "What does the data bus do?",
+    "choices": [
+      "carries the binary 1's and 0's that make up the actual information being transmitted around the CPU",
+      "coordinates all the components of the cpu",
+      "sends read or write signals to Main memory"
+    ],
+    "topic": "Structure and function of the processor",
+    "difficulty": "EASY",
+    "answer": "carries the binary 1's and 0's that make up the actual information being transmitted around the CPU"
+  },
+  {
+    "id": 10,
+    "question": "What does the control bus do?",
+    "choices": [
+      "controls all the instructions that are fetched",
+      "temporarily stores the instruction that is currently being decoded or excecuted",
+      "carries control and command signals to and from every other component of the CPU"
+    ],
+    "topic": "Structure and function of the processor",
+    "difficulty": "EASY",
+    "answer": "carries control and command signals to and from every other component of the CPU"
+  }
+]

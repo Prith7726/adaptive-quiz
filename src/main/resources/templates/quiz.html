@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Adaptive Quiz: Registration Success</title>
+</head>
+<body>
+    Hi  <label th:text="${session.register.name}" />, <br/> Quiz is here... <br/>
+
+
+    <p> Topic: </p><label th:text="${query.topic}" /><br/>
+    <p> Question: </p><label th:text="${query.question}" /><br/>
+    <p> Difficulty: </p><label th:text="${query.difficulty}" /><br/>
+
+    <form th:action="@{/quiz/nextQuery}" method="post">
+<!--        <ul>-->
+<!--            <li th:each="choice : ${query.choices}">-->
+<!--                <input type="radio" th:field="${choice}" th:value="${choice}" />-->
+<!--                <label th:for="${choice}" th:text="${choice}"></label>-->
+<!--            </li>-->
+<!--        </ul>-->
+        <ul>
+            <li th:each="choice : ${query.choices}">
+                <input type="radio" name="choices" th:text="${choice}" th:value="${choice}" />
+            </li>
+        </ul>
+
+        <input type="hidden" name="currentIndex" th:value="${query.id}"/>
+
+        <div><input type="submit" value="Next"/></div>
+    </form>
+
+</body>
+</html>

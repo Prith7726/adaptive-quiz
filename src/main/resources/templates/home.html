@@ -63,19 +63,19 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-sm-12 col-md-12 col-lg-12 p-3  bg-light">
             <p class="h1">
-               Register !
+               Welcome <label th:text="${session.register.name}" />
             </p>
         </div>
     </div>
     <div class="row justify-content-center align-items-center">
         <div class="col-sm-12 col-md-12 col-lg-12 p-3 bg-light">
-            <form th:action="@{/quiz/register}" method="post">
-                <div class="col-sm-6 col-md-6 col-lg-6 p-3  bg-light">
-                    <label>Name : <input type="text" name="name"/> </label>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-6 p-3  bg-light">
-                    <input type="submit" value="Get Started!"/>
-                </div>
+            <form th:action="@{/quiz/start}" method="post">
+                <div><input type="submit" value="Start"/></div>
+            </form>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-12 p-3 bg-light">
+            <form th:action="@{/quiz/deregister}" method="post">
+                <div><input type="submit" value="Bye Bye!"/></div>
             </form>
         </div>
     </div>

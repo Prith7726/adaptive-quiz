@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Adaptive Quiz: Registration Success</title>
+</head>
+<body>
+    Hi  <label th:text="${session.register.name}" />, Registration Successful!
+
+    <form th:action="@{/quiz/start}" method="post">
+        <div><input type="submit" value="Start"/></div>
+    </form>
+     <form th:action="@{/quiz/deregister}" method="post">
+        <div><input type="submit" value="Bye Bye!"/></div>
+    </form>
+
+
+</body>
+</html>
