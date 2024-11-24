@@ -11,7 +11,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.Optional;
 
-import static com.adaptive.quiz.controller.RegisterController.SESSION_REGISTER;
+import static com.adaptive.quiz.controller.QuizController.SESSION_REGISTER;
 
 @Controller
 @RequiredArgsConstructor

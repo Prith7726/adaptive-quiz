@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.random.RandomGenerator;
-
 @Service
 @Slf4j
 public class QuizService {
@@ -22,19 +20,22 @@ public class QuizService {
     }
 
     public Query getQuery() {
-        return queries[RandomGenerator.getDefault().nextInt(0, 10)];
+        return queries[0];
     }
 
-    public Query getQuery(int currentIndex) {
-        int index = getNextIndex(currentIndex);
-        return queries[index];
+    public Query getNextQuery(int currentIndex) {
+        return queries[currentIndex + 1];
     }
 
-    private int getNextIndex(int currentIndex) {
-        int i = RandomGenerator.getDefault().nextInt(0, 10);
-        if (i != currentIndex) {
-            return i;
-        }
-        return getNextIndex(currentIndex);
+    public Query getPrevQuery(int currentIndex) {
+        return queries[currentIndex - 1];
+    }
+
+    public boolean hasNext(int currentIndex) {
+        return currentIndex + 1 < queries.length;
+    }
+
+    public boolean hasPrevious(int currentIndex) {
+        return currentIndex - 1 >= 0;
     }
 }
