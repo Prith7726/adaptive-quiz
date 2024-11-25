@@ -17,42 +17,30 @@
     <nav class="navbar fixed-top bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">A Level Quiz</a>
+            <label th:text="${session.register.name}"/>
         </div>
     </nav>
     <div class="row">
         <div class="col-10">
             <div class="row justify-content-center align-items-center">
                 <div class="col-sm-12 col-md-12 col-lg-12 p-3">
-                    <p>Welcome to REVISION quiz!</p>
-                    <p>
-                        This webpage was created to help out A level computer science students on their revision.
-                        To get things started you need to register by clicking the register button down below
-                        Once you are in, then the fun truly starts
-                        Happy revising !!!
-                    </p>
+                    <h4> REVISION Results!</h4>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-10">
+        <div class="col-5">
             <div class="row justify-content-center align-items-center">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <form th:action="@{/quiz/start}" method="post">
-
-                        <div class="col-sm-6 col-md-6 col-lg-6 p-3">
-                            <div class="col-auto p-1">
-                                <input type="text" name="name" placeholder="enter your name" id="inputName" class="form-control">
-                            </div>
-                            <div class="col-auto p-1">
-                                <input class="btn btn-primary mb-2" type="submit" value="Get Started!"/>
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-sm-12 col-md-12 col-lg-12 p-3">
+                    Total Queries: <label th:text="${report.totalQueries}"/>
+                    Correct Answers: <label th:text="${report.rightAnswers}"/>
+                    Wrong Answers: <label th:text="${report.wrongAnswers}"/>
                 </div>
             </div>
         </div>
     </div>
+
 
     <nav class="navbar fixed-bottom bg-body-tertiary">
         <div class="container-fluid">

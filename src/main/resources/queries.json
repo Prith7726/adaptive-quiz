@@ -4,9 +4,18 @@
     "id": 1,
     "question": "What does the control unit do?",
     "choices": [
-      "holds all the registers",
-      "performs all the calculations in the CPU",
-      "coordinates all the components of the cpu"
+      {
+        "choice": 1,
+        "data": "holds all the registers"
+      },
+      {
+        "choice": 2,
+        "data": "performs all the calculations in the CPU"
+      },
+      {
+        "choice": 3,
+        "data": "coordinates all the components of the cpu"
+      }
     ],
     "topic": "maths",
     "difficulty": "EASY",
@@ -16,9 +25,18 @@
     "id": 2,
     "question": "What does the arithmetic logic unit do?",
     "choices": [
-      "holds the results of arithmatic calculations",
-      "performs arithmetic and logical operations on data",
-      "coordinates all the components of the CPU"
+      {
+        "choice": 1,
+        "data": "holds the results of arithmatic calculations"
+      },
+      {
+        "choice": 2,
+        "data": "performs arithmetic and logical operations on data"
+      },
+      {
+        "choice": 3,
+        "data": "coordinates all the components of the CPU"
+      }
     ],
     "topic": "Structure and function of the processor",
     "difficulty": "EASY",
@@ -28,9 +46,18 @@
     "id": 3,
     "question": "What does the accumulator do?",
     "choices": [
-      "stores the results of the calculations",
-      "sends control signals to parts of the CPU",
-      "decodes instructions"
+      {
+        "choice": 1,
+        "data": "stores the results of the calculations"
+      },
+      {
+        "choice": 2,
+        "data": "sends control signals to parts of the CPU"
+      },
+      {
+        "choice": 3,
+        "data": "decodes instructions"
+      }
     ],
     "topic": "Structure and function of the processor",
     "difficulty": "EASY",
@@ -40,21 +67,39 @@
     "id": 4,
     "question": "What does the current instruction register do?",
     "choices": [
-      "stores all the instructions that are to be excecuted ",
-      "stores the address of the current instruction to be excecuted",
-      "it temporarily stores the instruction that is currently being decoded or excecuted"
+      {
+        "choice": 1,
+        "data": "stores all the instructions that are to be executed"
+      },
+      {
+        "choice": 2,
+        "data": "stores the address of the current instruction to be executed"
+      },
+      {
+        "choice": 3,
+        "data": "it temporarily stores the instruction that is currently being decoded or executed"
+      }
     ],
     "topic": "Structure and function of the processor",
     "difficulty": "EASY",
-    "answer": "it temporarily stores the instruction that is currently being decoded or excecuted"
+    "answer": "it temporarily stores the instruction that is currently being decoded or executed"
   },
   {
     "id": 5,
     "question": "What does the memory address register do?",
     "choices": [
-      "sends address signals to other parts of the CPU",
-      "stores memory addresses for data that is being fetched or stored",
-      "reads addresses from main memory"
+      {
+        "choice": 1,
+        "data": "sends address signals to other parts of the CPU"
+      },
+      {
+        "choice": 2,
+        "data": "stores memory addresses for data that is being fetched or stored"
+      },
+      {
+        "choice": 3,
+        "data": "reads addresses from main memory"
+      }
     ],
     "topic": "Structure and function of the processor",
     "difficulty": "EASY",
@@ -64,9 +109,18 @@
     "id": 6,
     "question": "What does the memory data register do?",
     "choices": [
-      "temporarily holds the data that is being transferred to and from memory",
-      "stores the address of the next piece of data to be fetched",
-      "sends read or write signals to Main memory"
+      {
+        "choice": 1,
+        "data": "temporarily holds the data that is being transferred to and from memory"
+      },
+      {
+        "choice": 2,
+        "data": "stores the address of the next piece of data to be fetched"
+      },
+      {
+        "choice": 3,
+        "data": "sends read or write signals to Main memory"
+      }
     ],
     "topic": "Structure and function of the processor",
     "difficulty": "EASY",
@@ -76,9 +130,18 @@
     "id": 7,
     "question": "Name the three buses in a CPU?",
     "choices": [
-      "control, arithmatic, system",
-      "data, memory, logic",
-      "control, address, data"
+      {
+        "choice": 1,
+        "data": "control, arithmetic, system"
+      },
+      {
+        "choice": 2,
+        "data": "data, memory, logic"
+      },
+      {
+        "choice": 3,
+        "data": "control, address, data"
+      }
     ],
     "topic": "Structure and function of the processor",
     "difficulty": "EASY",
@@ -88,9 +151,18 @@
     "id": 8,
     "question": "What does the address bus do?",
     "choices": [
-      "carries memory addresses that identify where the data is being read from or written to",
-      "sends read or write signals to Main memory",
-      "stores memory addresses for data that is being fetched or stored"
+      {
+        "choice": 1,
+        "data": "carries memory addresses that identify where the data is being read from or written to"
+      },
+      {
+        "choice": 2,
+        "data": "sends read or write signals to Main memory"
+      },
+      {
+        "choice": 3,
+        "data": "stores memory addresses for data that is being fetched or stored"
+      }
     ],
     "topic": "Structure and function of the processor",
     "difficulty": "EASY",
@@ -100,9 +172,18 @@
     "id": 9,
     "question": "What does the data bus do?",
     "choices": [
-      "carries the binary 1's and 0's that make up the actual information being transmitted around the CPU",
-      "coordinates all the components of the cpu",
-      "sends read or write signals to Main memory"
+      {
+        "choice": 1,
+        "data": "carries the binary 1's and 0's that make up the actual information being transmitted around the CPU"
+      },
+      {
+        "choice": 2,
+        "data": "coordinates all the components of the cpu"
+      },
+      {
+        "choice": 3,
+        "data": "sends read or write signals to Main memory"
+      }
     ],
     "topic": "Structure and function of the processor",
     "difficulty": "EASY",
@@ -112,9 +193,18 @@
     "id": 10,
     "question": "What does the control bus do?",
     "choices": [
-      "controls all the instructions that are fetched",
-      "temporarily stores the instruction that is currently being decoded or excecuted",
-      "carries control and command signals to and from every other component of the CPU"
+      {
+        "choice": 1,
+        "data": "controls all the instructions that are fetched"
+      },
+      {
+        "choice": 2,
+        "data": "temporarily stores the instruction that is currently being decoded or executed"
+      },
+      {
+        "choice": 3,
+        "data": "carries control and command signals to and from every other component of the CPU"
+      }
     ],
     "topic": "Structure and function of the processor",
     "difficulty": "EASY",

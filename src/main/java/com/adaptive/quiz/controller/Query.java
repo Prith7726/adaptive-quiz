@@ -12,8 +12,9 @@ public class Query {
     }
     private long id;
     private String question;
-    private String[] choices;
+    private Choice[] choices;
     private String topic;
     private Difficulty difficulty;
     private String answer;
+    private boolean selected;
 }

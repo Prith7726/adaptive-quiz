@@ -17,6 +17,7 @@ public class QuizController {
     public static final String CURRENT_INDEX = "currentIndex";
     public static final String HAS_NEXT = "hasNext";
     public static final String HAS_PREVIOUS = "hasPrevious";
+    public static final String SHOW_FINISH = "showFinish";
     private final QuizService quizService;
     private final RegisterService registerService;
 
@@ -25,31 +26,71 @@ public class QuizController {
         RegisterResponse response = registerService.register(name);
         request.getSession(true).setAttribute(SESSION_REGISTER, response);
 
-        model.addAttribute(QUERY, quizService.getQuery());
+        model.addAttribute(QUERY, quizService.getQuery(getUser(request)));
         model.addAttribute(CURRENT_INDEX, 0);
         model.addAttribute(HAS_NEXT, true);
         model.addAttribute(HAS_PREVIOUS, false);
+        model.addAttribute(SHOW_FINISH, false);
 
         return "quiz";
     }
 
+    @PostMapping(value = "/quiz/checkAnswer")
+    public String checkAnswer(
+            @RequestParam(name = CURRENT_INDEX) int currentIndex,
+            @RequestParam(name = "quizItem") String answer,
+            HttpServletRequest request,
+            Model model
+    ) {
+        String user = getUser(request);
+        model.addAttribute(
+                "answer_status",
+                quizService.checkAnswer(user, currentIndex, answer) ? "Right Answer!" : "Please try again!");
+        model.addAttribute(QUERY, quizService.getQuery(user, currentIndex));
+        setActionAttributes(user, currentIndex, model);
+        return "quiz";
+    }
+
+    String getUser(HttpServletRequest request) {
+        return ((RegisterResponse) request.getSession().getAttribute(SESSION_REGISTER)).name();
+    }
+
     @PostMapping(value = "/quiz/nextQuery")
-    public String nextQuery(@RequestParam(name = CURRENT_INDEX) int currentIndex, Model model) {
-        model.addAttribute(QUERY, quizService.getNextQuery(currentIndex));
-        setActionAttributes(currentIndex + 1, model);
+    public String nextQuery(@RequestParam(name = CURRENT_INDEX) int currentIndex,
+                            @RequestParam(name = "quizItem") String answer,
+                            HttpServletRequest request,
+                            Model model) {
+        String user = getUser(request);
+        model.addAttribute(QUERY, quizService.getNextQuery(user, currentIndex, answer));
+        setActionAttributes(user, currentIndex + 1, model);
         return "quiz";
     }
 
     @PostMapping(value = "/quiz/prevQuery")
-    public String prevQuery(@RequestParam(name = CURRENT_INDEX) int currentIndex, Model model) {
-        model.addAttribute(QUERY, quizService.getPrevQuery(currentIndex));
-        setActionAttributes(currentIndex - 1, model);
+    public String prevQuery(@RequestParam(name = CURRENT_INDEX) int currentIndex,
+                            @RequestParam(name = "quizItem") String answer,
+                            HttpServletRequest request,
+                            Model model) {
+        String user = getUser(request);
+        model.addAttribute(QUERY, quizService.getPrevQuery(user, currentIndex, answer));
+        setActionAttributes(user, currentIndex - 1, model);
         return "quiz";
     }
 
-    private void setActionAttributes(int index, Model model) {
+    @PostMapping(value = "/quiz/finishQuiz")
+    public String finishQuiz(@RequestParam(name = CURRENT_INDEX) int currentIndex,
+                             @RequestParam(name = "quizItem") String answer,
+                             HttpServletRequest request,
+                             Model model) {
+        String user = getUser(request);
+        model.addAttribute("report", quizService.finishQuiz(user, currentIndex, answer));
+        return "report";
+    }
+
+    private void setActionAttributes(String user, int index, Model model) {
         model.addAttribute(CURRENT_INDEX, index);
-        model.addAttribute(HAS_NEXT, quizService.hasNext(index));
+        model.addAttribute(HAS_NEXT, quizService.hasNext(user, index));
         model.addAttribute(HAS_PREVIOUS, quizService.hasPrevious(index));
+        model.addAttribute(SHOW_FINISH, quizService.hasAllAnswered(user));
     }
 }
