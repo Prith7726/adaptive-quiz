@@ -18,4 +18,8 @@ public class DataRepository {
     public Query[] getUserQuiz(String userName) {
         return userQuizTable.get(userName);
     }
+
+    public void unRegister(String user) {
+        userQuizTable.remove(user);
+    }
 }

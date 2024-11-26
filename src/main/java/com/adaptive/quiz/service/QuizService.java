@@ -44,11 +44,7 @@ public class QuizService {
     private void setSelected(String user, int currentIndex, String answer) {
         if (StringUtils.hasText(answer)) {
             for (Choice c : getQuery(user, currentIndex).getChoices()) {
-                if (c.getData().equalsIgnoreCase(answer)) {
-                    c.setSelected(true);
-                } else {
-                    c.setSelected(false);
-                }
+                c.setSelected(c.getData().equalsIgnoreCase(answer));
             }
         }
     }
@@ -85,12 +81,12 @@ public class QuizService {
                 if (c.isSelected() && c.getData().equalsIgnoreCase(q.getAnswer())) {
                     rightAnswer++;
                 }
+
             }
         }
         return QuizReport.builder()
-                .totalQueries(allQueries.length)
-                .rightAnswers(rightAnswer)
-                .wrongAnswers(allQueries.length - rightAnswer)
+                .queries(allQueries)
+                .totalQueries("Result: " + rightAnswer + " out of " + allQueries.length)
                 .build();
 
     }

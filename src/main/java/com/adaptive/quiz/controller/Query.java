@@ -1,11 +1,15 @@
 package com.adaptive.quiz.controller;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class Query {
+@Builder
+public class Query implements Serializable {
 
     enum Difficulty {
         EASY, INTERMEDIATE, BEGINNER;

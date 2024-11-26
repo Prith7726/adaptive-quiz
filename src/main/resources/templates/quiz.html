@@ -42,11 +42,8 @@
                             <li class="list-group-item" th:each="choice : ${query.choices}">
                                 <input class="form-check-input me-1"
                                        type="radio" th:value="${choice.data}" name="quizItem"
-                                       id="firstCheckbox"
                                        th:checked="${choice.selected == true}">
-                                <label class="form-check-label"
-                                       for="firstCheckbox"
-                                       th:text="${choice.data}"/>
+                                <label class="form-check-label" th:text="${choice.data}"/>
                             </li>
                         </ul>
                         <input th:type="hidden" th:name="currentIndex" th:value="${currentIndex}"/>
@@ -62,8 +59,8 @@
                                    th:onclick="nextQuery()"
                                    th:disabled="${hasNext == false}"/>
                             <input class="btn btn-primary" th:type="button" th:value="Finish"
-                                   th:onclick="finishQuiz()"
-                                   th:disabled="${hasNext == true}"/>
+                                   th:onclick="finishQuiz()"/>
+                            <!--                                   th:disabled="${hasNext == true}"/>-->
                         </div>
 
                         <script th:inline="javascript">
@@ -81,6 +78,7 @@
                                 document.getElementById("queryForm").action = "/quiz/checkAnswer";
                                 document.getElementById("queryForm").submit();
                             }
+
                             function finishQuiz() {
                                 document.getElementById("queryForm").action = "/quiz/finishQuiz";
                                 document.getElementById("queryForm").submit();

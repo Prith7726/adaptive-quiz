@@ -35,10 +35,27 @@ public class QuizController {
         return "quiz";
     }
 
+    @PostMapping(value = "/quiz/restart")
+    public String restart(Model model, HttpServletRequest request) {
+        RegisterResponse registerResponse = (RegisterResponse) request.getSession().getAttribute(SESSION_REGISTER);
+        registerService.deRegister(registerResponse.name());
+        request.getSession().invalidate();
+        RegisterResponse response = registerService.register(registerResponse.name());
+        request.getSession(true).setAttribute(SESSION_REGISTER, response);
+
+        model.addAttribute(QUERY, quizService.getQuery(getUser(request)));
+        model.addAttribute(CURRENT_INDEX, 0);
+        model.addAttribute(HAS_NEXT, true);
+        model.addAttribute(HAS_PREVIOUS, false);
+        model.addAttribute(SHOW_FINISH, false);
+
+        return "quiz";
+    }
+
     @PostMapping(value = "/quiz/checkAnswer")
     public String checkAnswer(
             @RequestParam(name = CURRENT_INDEX) int currentIndex,
-            @RequestParam(name = "quizItem") String answer,
+            @RequestParam(name = "quizItem", required = false) String answer,
             HttpServletRequest request,
             Model model
     ) {
@@ -57,7 +74,7 @@ public class QuizController {
 
     @PostMapping(value = "/quiz/nextQuery")
     public String nextQuery(@RequestParam(name = CURRENT_INDEX) int currentIndex,
-                            @RequestParam(name = "quizItem") String answer,
+                            @RequestParam(name = "quizItem", required = false) String answer,
                             HttpServletRequest request,
                             Model model) {
         String user = getUser(request);
@@ -68,7 +85,7 @@ public class QuizController {
 
     @PostMapping(value = "/quiz/prevQuery")
     public String prevQuery(@RequestParam(name = CURRENT_INDEX) int currentIndex,
-                            @RequestParam(name = "quizItem") String answer,
+                            @RequestParam(name = "quizItem", required = false) String answer,
                             HttpServletRequest request,
                             Model model) {
         String user = getUser(request);
@@ -79,12 +96,19 @@ public class QuizController {
 
     @PostMapping(value = "/quiz/finishQuiz")
     public String finishQuiz(@RequestParam(name = CURRENT_INDEX) int currentIndex,
-                             @RequestParam(name = "quizItem") String answer,
+                             @RequestParam(name = "quizItem", required = false) String answer,
                              HttpServletRequest request,
                              Model model) {
         String user = getUser(request);
         model.addAttribute("report", quizService.finishQuiz(user, currentIndex, answer));
         return "report";
+    }
+
+    @PostMapping(value = "/quiz/logout")
+    public String logout(HttpServletRequest request) {
+        registerService.deRegister(getUser(request));
+        request.getSession().invalidate();
+        return "index";
     }
 
     private void setActionAttributes(String user, int index, Model model) {

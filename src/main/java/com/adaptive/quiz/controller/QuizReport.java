@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 public class QuizReport {
 
-    private int totalQueries;
-    private int rightAnswers;
-    private int wrongAnswers;
+    private String totalQueries;
+    private Query[] queries;
 
 }

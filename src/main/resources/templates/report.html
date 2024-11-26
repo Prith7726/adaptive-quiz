@@ -33,9 +33,45 @@
         <div class="col-5">
             <div class="row justify-content-center align-items-center">
                 <div class="col-sm-12 col-md-12 col-lg-12 p-3">
-                    Total Queries: <label th:text="${report.totalQueries}"/>
-                    Correct Answers: <label th:text="${report.rightAnswers}"/>
-                    Wrong Answers: <label th:text="${report.wrongAnswers}"/>
+                    <div>Total Queries: <label th:text="${report.totalQueries}"/></div>
+                    <div class="row" th:each="query : ${report.queries}">
+                        <div class="col-10" th:text="${query.question}"></div>
+                        <div class="form-check" th:each="choice : ${query.choices}">
+                            <div th:class="${query.answer == choice.data ? 'bg-success' : ''}">
+                                <input class="form-check-input" th:checked="${choice.selected == true}" type="radio"
+                                       disabled>
+                                <label class="form-check-label" th:text="${choice.data}"/>
+                            </div>
+                        </div>
+
+                        <div> ---- XXX ---</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pb-5">
+        <div class="col-10">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-sm-12 col-md-12 col-lg-12 p-3">
+                    <form th:id="reportForm" th:name="reportForm" method="post">
+                        <input class="btn btn-primary" th:type="button" value="Start Again"
+                               th:onclick="startAgain()"/>
+                        <input class="btn btn-primary" type="button" value="Logout" th:onclick="logout()"/>
+
+                        <script th:inline="javascript">
+                            function startAgain() {
+                                document.getElementById("reportForm").action = "/quiz/restart";
+                                document.getElementById("reportForm").submit();
+                            }
+
+                            function logout() {
+                                document.getElementById("reportForm").action = "/quiz/logout";
+                                document.getElementById("reportForm").submit();
+                            }
+
+                        </script>
+                    </form>
                 </div>
             </div>
         </div>
