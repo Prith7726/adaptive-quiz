@@ -3,23 +3,24 @@ package com.adaptive.quiz.repository;
 import com.adaptive.quiz.controller.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class DataRepository {
 
-    ConcurrentHashMap<String, Query[]> userQuizTable = new ConcurrentHashMap<>();
+    ConcurrentHashMap<UUID, Query[]> userQuizTable = new ConcurrentHashMap<>();
 
-    public String register(String userName, Query[] queries) {
-        userQuizTable.put(userName, queries);
-        return userName;
+    public UUID register(UUID uuid, Query[] queries) {
+        userQuizTable.put(uuid, queries);
+        return uuid;
     }
 
-    public Query[] getUserQuiz(String userName) {
-        return userQuizTable.get(userName);
+    public Query[] getUserQuiz(UUID uuid) {
+        return userQuizTable.get(uuid);
     }
 
-    public void unRegister(String user) {
-        userQuizTable.remove(user);
+    public void unRegister(UUID uuid) {
+        userQuizTable.remove(uuid);
     }
 }

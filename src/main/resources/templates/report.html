@@ -33,19 +33,30 @@
         <div class="col-5">
             <div class="row justify-content-center align-items-center">
                 <div class="col-sm-12 col-md-12 col-lg-12 p-3">
-                    <div>Total Queries: <label th:text="${report.totalQueries}"/></div>
-                    <div class="row" th:each="query : ${report.queries}">
-                        <div class="col-10" th:text="${query.question}"></div>
-                        <div class="form-check" th:each="choice : ${query.choices}">
-                            <div th:class="${query.answer == choice.data ? 'bg-success' : ''}">
-                                <input class="form-check-input" th:checked="${choice.selected == true}" type="radio"
-                                       disabled>
-                                <label class="form-check-label" th:text="${choice.data}"/>
-                            </div>
-                        </div>
+                    <div><label th:text="${report.totalQueries}"/></div>
 
-                        <div> ---- XXX ---</div>
+                    <div class="progress">
+
+                        <div class="progress-bar bg-success" role="progressbar" th:style="${report.rightsStyle}"
+                             aria-valuenow="1" aria-valuemin="0" aria-valuemax="10"><label
+                                th:value="${report.rightsPercentage}"/></div>
+                        <div class="progress-bar bg-danger" role="progressbar" th:style="${report.wrongsStyle}"
+                             aria-valuenow="1" aria-valuemin="0" aria-valuemax="10"><label
+                                th:value="${report.wrongsPercentage}"/></div>
                     </div>
+
+                    <!--                    <div class="row" th:each="query : ${report.queries}">-->
+                    <!--                        <div class="col-10" th:text="${query.question}"></div>-->
+                    <!--                        <div class="form-check" th:each="choice : ${query.choices}">-->
+                    <!--                            <div th:class="${query.answer == choice.data ? 'bg-success' : ''}">-->
+                    <!--                                <input class="form-check-input" th:checked="${choice.selected == true}" type="radio"-->
+                    <!--                                       disabled>-->
+                    <!--                                <label class="form-check-label" th:text="${choice.data}"/>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+
+                    <!--                        <div> &#45;&#45;&#45;&#45; XXX -&#45;&#45;</div>-->
+                    <!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -55,11 +66,18 @@
             <div class="row justify-content-center align-items-center">
                 <div class="col-sm-12 col-md-12 col-lg-12 p-3">
                     <form th:id="reportForm" th:name="reportForm" method="post">
+                        <input class="btn btn-primary" th:type="button" value="Review Answers"
+                               th:onclick="reviewAnswers()"/>
                         <input class="btn btn-primary" th:type="button" value="Start Again"
                                th:onclick="startAgain()"/>
                         <input class="btn btn-primary" type="button" value="Logout" th:onclick="logout()"/>
 
                         <script th:inline="javascript">
+                            function reviewAnswers() {
+                                document.getElementById("reportForm").action = "/quiz/reviewAnswers";
+                                document.getElementById("reportForm").submit();
+                            }
+
                             function startAgain() {
                                 document.getElementById("reportForm").action = "/quiz/restart";
                                 document.getElementById("reportForm").submit();

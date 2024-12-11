@@ -6,8 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,23 +27,25 @@ public class QuizController {
     @PostMapping(value = "/quiz/start")
     public String start(@RequestParam(name = "name") String name, Model model, HttpServletRequest request) {
         RegisterResponse response = registerService.register(name);
-        request.getSession(true).setAttribute(SESSION_REGISTER, response);
-
-        model.addAttribute(QUERY, quizService.getQuery(getUser(request)));
-        model.addAttribute(CURRENT_INDEX, 0);
-        model.addAttribute(HAS_NEXT, true);
-        model.addAttribute(HAS_PREVIOUS, false);
-        model.addAttribute(SHOW_FINISH, false);
-
-        return "quiz";
+        return setDefaults(model, request, response);
     }
 
     @PostMapping(value = "/quiz/restart")
     public String restart(Model model, HttpServletRequest request) {
         RegisterResponse registerResponse = (RegisterResponse) request.getSession().getAttribute(SESSION_REGISTER);
-        registerService.deRegister(registerResponse.name());
+        registerService.deRegister(registerResponse.uuid());
         request.getSession().invalidate();
         RegisterResponse response = registerService.register(registerResponse.name());
+        return setDefaults(model, request, response);
+    }
+
+    @PostMapping(value = "/quiz/reviewAnswers")
+    public String reviewAnswers(Model model, HttpServletRequest request) {
+        setDefaults(model, request, (RegisterResponse) request.getSession().getAttribute(SESSION_REGISTER));
+        return "review";
+    }
+
+    private String setDefaults(Model model, HttpServletRequest request, RegisterResponse response) {
         request.getSession(true).setAttribute(SESSION_REGISTER, response);
 
         model.addAttribute(QUERY, quizService.getQuery(getUser(request)));
@@ -59,39 +64,41 @@ public class QuizController {
             HttpServletRequest request,
             Model model
     ) {
-        String user = getUser(request);
+        UUID uuid = getUser(request);
         model.addAttribute(
                 "answer_status",
-                quizService.checkAnswer(user, currentIndex, answer) ? "Right Answer!" : "Please try again!");
-        model.addAttribute(QUERY, quizService.getQuery(user, currentIndex));
-        setActionAttributes(user, currentIndex, model);
+                quizService.checkAnswer(uuid, currentIndex, answer) ? "Right Answer!" : "Please try again!");
+        model.addAttribute(QUERY, quizService.getQuery(uuid, currentIndex));
+        setActionAttributes(uuid, currentIndex, model);
         return "quiz";
     }
 
-    String getUser(HttpServletRequest request) {
-        return ((RegisterResponse) request.getSession().getAttribute(SESSION_REGISTER)).name();
+    UUID getUser(HttpServletRequest request) {
+        return ((RegisterResponse) request.getSession().getAttribute(SESSION_REGISTER)).uuid();
     }
 
     @PostMapping(value = "/quiz/nextQuery")
     public String nextQuery(@RequestParam(name = CURRENT_INDEX) int currentIndex,
                             @RequestParam(name = "quizItem", required = false) String answer,
+                            @RequestParam(name = "target", required = false) String target,
                             HttpServletRequest request,
                             Model model) {
-        String user = getUser(request);
-        model.addAttribute(QUERY, quizService.getNextQuery(user, currentIndex, answer));
-        setActionAttributes(user, currentIndex + 1, model);
-        return "quiz";
+        UUID uuid = getUser(request);
+        model.addAttribute(QUERY, quizService.getNextQuery(uuid, currentIndex, answer));
+        setActionAttributes(uuid, currentIndex + 1, model);
+        return StringUtils.hasText(target) ? target : "quiz";
     }
 
     @PostMapping(value = "/quiz/prevQuery")
     public String prevQuery(@RequestParam(name = CURRENT_INDEX) int currentIndex,
                             @RequestParam(name = "quizItem", required = false) String answer,
+                            @RequestParam(name = "target", required = false) String target,
                             HttpServletRequest request,
                             Model model) {
-        String user = getUser(request);
-        model.addAttribute(QUERY, quizService.getPrevQuery(user, currentIndex, answer));
-        setActionAttributes(user, currentIndex - 1, model);
-        return "quiz";
+        UUID uuid = getUser(request);
+        model.addAttribute(QUERY, quizService.getPrevQuery(uuid, currentIndex, answer));
+        setActionAttributes(uuid, currentIndex - 1, model);
+        return StringUtils.hasText(target) ? target : "quiz";
     }
 
     @PostMapping(value = "/quiz/finishQuiz")
@@ -99,8 +106,8 @@ public class QuizController {
                              @RequestParam(name = "quizItem", required = false) String answer,
                              HttpServletRequest request,
                              Model model) {
-        String user = getUser(request);
-        model.addAttribute("report", quizService.finishQuiz(user, currentIndex, answer));
+        UUID uuid = getUser(request);
+        model.addAttribute("report", quizService.finishQuiz(uuid, currentIndex, answer));
         return "report";
     }
 
@@ -111,10 +118,10 @@ public class QuizController {
         return "index";
     }
 
-    private void setActionAttributes(String user, int index, Model model) {
+    private void setActionAttributes(UUID uuid, int index, Model model) {
         model.addAttribute(CURRENT_INDEX, index);
-        model.addAttribute(HAS_NEXT, quizService.hasNext(user, index));
+        model.addAttribute(HAS_NEXT, quizService.hasNext(uuid, index));
         model.addAttribute(HAS_PREVIOUS, quizService.hasPrevious(index));
-        model.addAttribute(SHOW_FINISH, quizService.hasAllAnswered(user));
+        model.addAttribute(SHOW_FINISH, quizService.hasAllAnswered(uuid));
     }
 }

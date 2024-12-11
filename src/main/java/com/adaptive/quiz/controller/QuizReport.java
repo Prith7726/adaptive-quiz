@@ -11,5 +11,10 @@ public class QuizReport {
 
     private String totalQueries;
     private Query[] queries;
+    private String rightsStyle;
+    private String wrongsStyle;
+    private String rightsPercentage;
+    private String wrongsPercentage;
+
 
 }

@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+
 @Service
 public class RegisterService {
 
@@ -37,7 +38,7 @@ public class RegisterService {
         String actualName = StringUtils.hasText(name) ? name : uuid.toString();
         repository.register(uuid, actualName);
 
-        dataRepository.register(actualName, getQueries());
+        dataRepository.register(uuid, getQueries());
         return new RegisterResponse(uuid, actualName);
     }
 
@@ -49,7 +50,7 @@ public class RegisterService {
         }
     }
 
-    public void deRegister(String user) {
-        dataRepository.unRegister(user);
+    public void deRegister(UUID uuid) {
+        dataRepository.unRegister(uuid);
     }
 }
