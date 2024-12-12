@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Random;
 import java.util.UUID;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -21,6 +22,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Service
 public class RegisterService {
 
+    public static final Random RND = new Random();
     private final RegisterRepository repository;
     private final DataRepository dataRepository;
     private final Resource resource;
@@ -44,7 +46,7 @@ public class RegisterService {
 
     public Query[] getQueries() {
         try (Reader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
-            return new Gson().fromJson(reader, Query[].class);
+            return shuffleArray(new Gson().fromJson(reader, Query[].class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -52,5 +54,16 @@ public class RegisterService {
 
     public void deRegister(UUID uuid) {
         dataRepository.unRegister(uuid);
+    }
+
+    Query[] shuffleArray(Query[] queries) {
+        for (int i = queries.length - 1; i > 0; i--) {
+            int index = RND.nextInt(i + 1);
+            // Simple swap
+            Query a = queries[index];
+            queries[index] = queries[i];
+            queries[i] = a;
+        }
+        return queries;
     }
 }
