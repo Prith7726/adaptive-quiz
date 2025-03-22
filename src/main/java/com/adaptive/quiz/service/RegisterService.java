@@ -2,8 +2,10 @@ package com.adaptive.quiz.service;
 
 import com.adaptive.quiz.controller.Query;
 import com.adaptive.quiz.controller.RegisterResponse;
+import com.adaptive.quiz.model.Quiz;
 import com.adaptive.quiz.model.RegisterRepository;
 import com.adaptive.quiz.repository.DataRepository;
+import com.adaptive.quiz.repository.QuizRepository;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -26,13 +28,15 @@ public class RegisterService {
     private final RegisterRepository repository;
     private final DataRepository dataRepository;
     private final Resource resource;
+    private final QuizRepository quizRepository;
 
     public RegisterService(RegisterRepository repository,
                            DataRepository dataRepository,
-                           @Value("classpath:queries.json") Resource resource) {
+                           @Value("classpath:quizzes/queries.json") Resource resource, QuizRepository quizRepository) {
         this.repository = repository;
         this.dataRepository = dataRepository;
         this.resource = resource;
+        this.quizRepository = quizRepository;
     }
 
     public RegisterResponse register(String name) {
@@ -42,6 +46,12 @@ public class RegisterService {
 
         dataRepository.register(uuid, getQueries());
         return new RegisterResponse(uuid, actualName);
+    }
+
+
+    public Quiz getQueries(int id) {
+        return quizRepository.findById(id)
+                .orElse(null);
     }
 
     public Query[] getQueries() {

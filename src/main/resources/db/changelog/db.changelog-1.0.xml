@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet author="prith" id="1.0">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="USERS"/>
+        </preConditions>
+        <sql>delete from databasechangelog where id = '1'</sql>
+        <dropIndex indexName="ix_auth_username"
+                   schemaName="public"
+                   tableName="USERS"/>
+        <dropTable schemaName="public" tableName="USERS" />
+        <dropTable schemaName="public" tableName="ROLES" />
+    </changeSet>
+</databaseChangeLog>

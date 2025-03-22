@@ -16,7 +16,8 @@
     <nav class="navbar fixed-top bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">A Level Quiz</a>
-            <label th:text="${session.register.name}"/>
+            <label sec:authentication="name"/>
+            <a class="navbar-brand" th:href="@{/logout}">Logout</a>
         </div>
     </nav>
     <div class="row">
@@ -25,7 +26,8 @@
                 <div class="col-sm-12 col-md-12 col-lg-12 p-3">
                     <div class="row">
                         <div class="col-10 border border-primary-subtle rounded-pill">
-                            <h4>Topic: <label th:text="${query.topic}"/></h4>
+                            <h4>Subject: <label th:text="${question.subject}"/></h4>
+                            <h4>Topic: <label th:text="${question.topic}"/></h4>
                         </div>
                     </div>
                 </div>
@@ -36,26 +38,31 @@
         <div class="col-10">
             <div class="row justify-content-center align-items-center">
                 <div class="col-sm-12 col-md-12 col-lg-12 p-3">
-                    <form th:id="queryForm" th:name="queryForm" th:action="@{/quiz/nextQuery}" method="post">
-                        <label th:text="${query.question}"/>
+                    <form th:id="queryForm" th:name="queryForm" th:action="@{/quiz/updateChoice}" method="post">
+                        <h3><label th:text="${question.question}"/> </h3>
                         <ul class="list-group">
-                            <li class="list-group-item" th:each="choice : ${query.choices}">
-                                <input class="form-check-input me-1"
-                                       type="radio" th:value="${choice.data}" name="quizItem"
-                                       th:checked="${choice.selected == true}">
+                            <li class="list-group-item" th:each="choice : ${question.choices}">
+                                <input class="form-check-input me-1" th:onchange="updateChoice()"
+                                       type="radio" th:value="${choice.id}" name="quizItem"
+                                       th:checked="${choice.isSelected() == true}">
                                 <label class="form-check-label" th:text="${choice.data}"/>
                             </li>
                         </ul>
-                        <input th:type="hidden" th:name="currentIndex" th:value="${currentIndex}"/>
+                        <input th:type="hidden" th:name="actualQuizId" th:value="${question.actualQuizId}"/>
+                        <input th:type="hidden" th:name="quizId" th:value="${question.quizId}"/>
+                        <input th:type="hidden" th:name="questionId" th:value="${question.questionId}"/>
+                        <input th:type="hidden" th:name="currentIndex" th:value="${question.uiIndex}"/>
+                        <input th:type="hidden" th:name="previousIndex" th:value="${previousIndex}"/>
+                        <input th:type="hidden" th:name="nextIndex" th:value="${nextIndex}"/>
                         <div>
                             <h5><label class="" th:text="${answer_status}"/></h5>
                         </div>
                         <div>
-                            <input class="btn btn-primary" th:type="button" th:value="Previous"
+                            <input class="btn btn-primary" th:type="button" th:value="Previous" th:if="${previousIndex > 0}"
                                    th:onclick="previousQuery()"
                                    th:disabled="${hasPrevious == false}"/>
                             <input class="btn btn-primary" type="button" value="Check" th:onclick="checkAnswer()"/>
-                            <input class="btn btn-primary" th:type="button" th:value="Next"
+                            <input class="btn btn-primary" th:type="button" th:value="Next" th:if="${nextIndex > 0}"
                                    th:onclick="nextQuery()"
                                    th:disabled="${hasNext == false}"/>
                             <input class="btn btn-primary" th:type="button" th:value="Finish"
@@ -64,23 +71,28 @@
                         </div>
 
                         <script th:inline="javascript">
+                            function updateChoice() {
+                                document.getElementById("queryForm").action = "/v1/quiz/updateChoice";
+                                document.getElementById("queryForm").submit();
+                            }
+
                             function previousQuery() {
-                                document.getElementById("queryForm").action = "/quiz/prevQuery";
+                                document.getElementById("queryForm").action = "/v1/quiz/prevQuery";
                                 document.getElementById("queryForm").submit();
                             }
 
                             function nextQuery() {
-                                document.getElementById("queryForm").action = "/quiz/nextQuery";
+                                document.getElementById("queryForm").action = "/v1/quiz/nextQuery";
                                 document.getElementById("queryForm").submit();
                             }
 
                             function checkAnswer() {
-                                document.getElementById("queryForm").action = "/quiz/checkAnswer";
+                                document.getElementById("queryForm").action = "/v1/quiz/checkAnswer";
                                 document.getElementById("queryForm").submit();
                             }
 
                             function finishQuiz() {
-                                document.getElementById("queryForm").action = "/quiz/finishQuiz";
+                                document.getElementById("queryForm").action = "/v1/quiz/finishQuiz";
                                 document.getElementById("queryForm").submit();
                             }
 

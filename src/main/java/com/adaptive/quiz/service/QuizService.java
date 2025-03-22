@@ -1,101 +1,169 @@
 package com.adaptive.quiz.service;
 
-import com.adaptive.quiz.controller.Choice;
-import com.adaptive.quiz.controller.Query;
-import com.adaptive.quiz.controller.QuizReport;
-import com.adaptive.quiz.repository.DataRepository;
+import com.adaptive.quiz.model.ActualQuiz;
+import com.adaptive.quiz.model.Choice;
+import com.adaptive.quiz.model.Question;
+import com.adaptive.quiz.model.Quiz;
+import com.adaptive.quiz.model.UserQuiz;
+import com.adaptive.quiz.repository.ActualQuizRepository;
+import com.adaptive.quiz.repository.QuestionRepository;
+import com.adaptive.quiz.repository.QuizRepository;
+import com.adaptive.quiz.repository.UserQuizRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.UUID;
-import java.util.function.Predicate;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class QuizService {
 
-    private final DataRepository dataRepository;
+    private final UserQuizRepository userQuizRepository;
+    private final QuizRepository quizRepository;
+    private final ActualQuizRepository actualQuizRepository;
+    private final QuestionRepository questionRepository;
 
-    public void quiz() {
-        log.warn("Am I initialized ?");
-    }
 
-    public Query getQuery(UUID uuid) {
-        return getQuery(uuid, 0);
-    }
-
-    public Query getQuery(UUID uuid, int index) {
-        return getAllQueries(uuid)[index];
-    }
-
-    public Query getNextQuery(UUID uuid, int currentIndex, String answer) {
-        setSelected(uuid, currentIndex, answer);
-        return getQuery(uuid, currentIndex + 1);
-    }
-
-    public Query getPrevQuery(UUID uuid, int currentIndex, String answer) {
-        setSelected(uuid, currentIndex, answer);
-        return getQuery(uuid, currentIndex - 1);
-    }
-
-    private void setSelected(UUID uuid, int currentIndex, String answer) {
-        if (StringUtils.hasText(answer)) {
-            for (Choice c : getQuery(uuid, currentIndex).getChoices()) {
-                c.setSelected(c.getData().equalsIgnoreCase(answer));
-            }
+    public UserQuiz start(int quizId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserQuiz existingUserQuiz = userQuizRepository.findByIdAndUsername(quizId, username);
+        if (existingUserQuiz != null) {
+            return existingUserQuiz;
         }
+
+        UserQuiz userQuiz = new UserQuiz();
+        userQuiz.setQuizId(quizId);
+        userQuiz.setUsername(username);
+        userQuiz.setStatus(1);
+        return userQuizRepository.save(userQuiz);
     }
 
-    public boolean hasNext(UUID uuid, int currentIndex) {
-        return currentIndex + 1 < getAllQueries(uuid).length;
+
+    public Question getFirstQuery(int quizId) {
+        return quizRepository.findById(quizId)
+                .flatMap(quiz -> quiz.getQuestions()
+                        .stream()
+                        .filter(q -> 1 == q.getDifficulty())
+                        .findFirst()).orElse(null);
     }
 
-    public boolean hasPrevious(int currentIndex) {
-        return currentIndex - 1 >= 0;
+    public ActualQuiz registerIntoActualQuiz(UserQuiz userQuiz, Question question, int uiIndex) {
+        ActualQuiz actualQuiz = new ActualQuiz();
+        actualQuiz.setUserQuizId(userQuiz.getId());
+        actualQuiz.setQuestionId(question.getId());
+        actualQuiz.setUiIndex(uiIndex);
+        return actualQuizRepository.save(actualQuiz);
     }
 
-    public boolean checkAnswer(UUID uuid, int currentIndex, String answer) {
-        setSelected(uuid, currentIndex, answer);
-        return getQuery(uuid, currentIndex).getAnswer().equalsIgnoreCase(answer);
+    public UserQuiz findUserQuiz(int quizId) {
+        return userQuizRepository.findById(quizId).orElse(null);
     }
 
-    public boolean hasAllAnswered(UUID uuid) {
-        Predicate<Query> queryPredicate = q -> !q.isSelected();
-        return Arrays.stream(getAllQueries(uuid))
-                .anyMatch(queryPredicate.negate());
+    public int getTotalQuestions(int quizId) {
+        return quizRepository.findById(quizId).map(q -> q.getQuestions().size()).orElse(0);
     }
 
-    private Query[] getAllQueries(UUID uuid) {
-        return dataRepository.getUserQuiz(uuid);
+    public ActualQuiz findActualQuiz(int actualQuizId) {
+        return actualQuizRepository.findById(actualQuizId).orElse(null);
     }
 
-    public QuizReport finishQuiz(UUID uuid, int currentIndex, String answer) {
-        setSelected(uuid, currentIndex, answer);
-        Query[] allQueries = getAllQueries(uuid);
-        double rightAnswer = 0;
-        for (Query q : allQueries) {
-            for (Choice c : q.getChoices()) {
-                if (c.isSelected() && c.getData().equalsIgnoreCase(q.getAnswer())) {
-                    rightAnswer++;
-                }
+    public ActualQuiz updateActualQuiz(int actualQuizId, int answer) {
+        ActualQuiz entity = actualQuizRepository.findById(actualQuizId).orElse(null);
+        assert entity != null;
+        entity.setAnswer(answer);
+        return actualQuizRepository.save(entity);
+    }
 
-            }
+    public Question findQuestion(int questionId) {
+        return questionRepository.findById(questionId).orElse(null);
+    }
+
+    public Question findNextQuestion(int quizId, int questionId, int actualQuizId, int index) {
+        // validate current answer
+        Question question = questionRepository.findById(questionId).orElse(null);
+        assert question != null;
+        ActualQuiz actualQuiz = findActualQuiz(actualQuizId);
+
+        int expectedAnswer = question.getChoices().stream().filter(Choice::isAnswer).findFirst().map(Choice::getId).orElse(-1);
+        final int level = question.getDifficulty();
+
+        final boolean increment = expectedAnswer == actualQuiz.getAnswer();
+
+        return quizRepository.findById(quizId)
+                .map(Quiz::getQuestions)
+                .map(qs -> getNextQuestion(qs, level, actualQuiz, increment))
+                .orElse(null);
+    }
+
+    private Question getNextQuestion(Set<Question> questions, int level, ActualQuiz actualQuiz, boolean actualIncrement) {
+        List<Integer> questionsIdByUserQuizId = actualQuizRepository.findQuestionsIdByUserQuizId(actualQuiz.getUserQuizId());
+
+        List<Question> unUsedQuestions = questions.stream()
+                .filter(q -> !isQuestionUsed(q.getId(), questionsIdByUserQuizId))
+                .toList();
+
+        return getQuestion(unUsedQuestions, level, actualIncrement);
+
+    }
+
+    private Question getQuestion(List<Question> unUsedQuestions, int level, boolean actualIncrement) {
+        level = actualIncrement ? level + 1 : level - 1;
+        level = level <= 0 ? 1 : level;
+        level = Math.min(level, 5);
+
+        Optional<Question> levelOneQuestions = unUsedQuestions.stream()
+                .filter(q -> q.getDifficulty() == 1)
+                .findFirst();
+
+        if (level == 1 && levelOneQuestions.isPresent()) {
+            return levelOneQuestions.get();
         }
-        double rightPercentage = (rightAnswer / allQueries.length) * 100;
-        double wrongPercentage = 100 - rightPercentage;
 
-        return QuizReport.builder()
-                .queries(allQueries)
-                .rightsStyle("width: " + rightPercentage + "%")
-                .wrongsStyle("width: " + wrongPercentage + "%")
-                .rightsPercentage(rightPercentage + "%")
-                .wrongsPercentage(wrongPercentage + "%")
-                .totalQueries("Result: " + (int) rightAnswer + " correct answers out of " + allQueries.length)
-                .build();
+        Optional<Question> levelTwoQuestions = unUsedQuestions.stream()
+                .filter(q -> q.getDifficulty() == 2)
+                .findFirst();
+
+        if ((level == 1 || level == 2) && (levelTwoQuestions.isPresent())) {
+            return levelTwoQuestions.get();
+        }
+
+        Optional<Question> levelThreeQuestions = unUsedQuestions.stream()
+                .filter(q -> q.getDifficulty() == 3)
+                .findFirst();
+
+
+        if (level <= 3 && levelThreeQuestions.isPresent()) {
+            return levelThreeQuestions.get();
+        }
+
+        Optional<Question> levelFourQuestions = unUsedQuestions.stream()
+                .filter(q -> q.getDifficulty() == 4)
+                .findFirst();
+        if (level <= 4 && levelFourQuestions.isPresent()) {
+            return levelFourQuestions.get();
+        }
+
+        Optional<Question> levelFiveQuestions = unUsedQuestions.stream()
+                .filter(q -> q.getDifficulty() == 5)
+                .findFirst();
+        return levelFiveQuestions
+                .orElseGet(() -> levelFourQuestions
+                        .orElseGet(() -> levelThreeQuestions
+                                .orElseGet(() -> levelTwoQuestions
+                                        .orElseGet(() -> levelOneQuestions
+                                                .orElse(null)))));
+
+
+    }
+
+    private boolean isQuestionUsed(int questionId, List<Integer> existingUsedQuestions) {
+        return existingUsedQuestions.stream()
+                .anyMatch(q -> questionId == q);
 
     }
 }

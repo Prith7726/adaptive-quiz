@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet author="prith" id="2.0">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="USERS"/>
+            </not>
+        </preConditions>
+
+        <sql>
+            create table users(
+            username varchar(50) not null primary key,
+            password varchar(500) not null,
+            first_name varchar(500),
+            last_name varchar(500),
+            enabled boolean not null
+            );
+        </sql>
+        <sql>
+            create table authorities (
+            username varchar(50) not null,
+            authority varchar(50) not null,
+            constraint fk_authorities_users foreign key(username) references users(username)
+            );
+        </sql>
+        <sql>
+            create unique index ix_auth_username on authorities (username,authority);
+        </sql>
+        <sql>
+            CREATE TABLE quiz(
+            id bigint GENERATED ALWAYS AS identity primary key,
+            name varchar not null,
+            file_name varchar not null
+            );
+        </sql>
+        <sql>
+            CREATE TABLE quiz_overview(
+            id bigint GENERATED ALWAYS AS identity primary key,
+            quiz_id int,
+            quiz_name varchar not null,
+            subjects varchar not null,
+            topics varchar not null,
+            levels varchar not null,
+            question_count int
+            );
+        </sql>
+        <sql>
+            create table Question(
+            id bigint GENERATED ALWAYS AS identity primary key,
+            quiz_id bigint not null,
+            subject varchar,
+            topic varchar,
+            question varchar not null,
+            difficulty int not null,
+            constraint fk_question_quiz foreign key(quiz_id) references quiz(id)
+            );
+        </sql>
+        <sql>
+            create table choices(
+            id bigint  GENERATED ALWAYS AS identity primary key,
+            data varchar not null,
+            is_answer boolean not null,
+            question_id bigint,
+            constraint fk_choice_question foreign key(question_id) references question(id)
+            );
+        </sql>
+        <sql>
+            CREATE TABLE user_quiz (
+            id bigint GENERATED ALWAYS AS identity primary key,
+            username varchar not null,
+            quiz_id bigint not null,
+            status int not null
+            );
+        </sql>
+        <sql>
+            create table actual_quiz (
+            id bigint GENERATED ALWAYS AS identity primary key,
+            user_quiz_id bigint not null,
+            question_id bigint not null,
+            answer int,
+            ui_index int
+            );
+        </sql>
+
+<!--        <sql>-->
+<!--            create table Question(-->
+<!--            id int primary key,-->
+<!--            question varchar not null,-->
+<!--            difficulty int-->
+<!--            );-->
+<!--        </sql>-->
+<!--        <sql>-->
+<!--            create table TOPIC_QUESTION(-->
+<!--            topic_id int,-->
+<!--            question_id int,-->
+<!--            primary key (topic_id, question_id),-->
+<!--            constraint fk_topic foreign key(topic_id) references topic(id),-->
+<!--            constraint fk_question foreign key(question_id) references question(id)-->
+<!--            );-->
+<!--        </sql>-->
+<!--        <sql>-->
+<!--            create table Choice(-->
+<!--            id int primary key,-->
+<!--            question_id int not null,-->
+<!--            choice varchar not null,-->
+<!--            isAnswer boolean,-->
+<!--            constraint fk_choice_question foreign key(question_id) references question(id)-->
+<!--            );-->
+<!--        </sql>-->
+<!--        <sql>-->
+<!--            create table Quiz(-->
+<!--            id int primary key,-->
+<!--            subject_id int not null,-->
+<!--            name varchar not null,-->
+<!--            constraint fk_quiz_subject foreign key(subject_id) references quiz(id)-->
+<!--            );-->
+<!--        </sql>-->
+<!--        <sql>-->
+<!--            create table quiz_users(-->
+<!--            id int primary key,-->
+<!--            quiz_id int,-->
+<!--            username varchar,-->
+<!--            constraint fk_quiz foreign key(quiz_id) references quiz(id),-->
+<!--            constraint fk_user foreign key(username) references users(username)-->
+<!--            );-->
+<!--        </sql>-->
+<!--        <sql>-->
+<!--            create table quiz_results(-->
+<!--            id int primary key,-->
+<!--            quiz_user_id int,-->
+<!--            total int,-->
+<!--            level1 int,-->
+<!--            level2 int,-->
+<!--            level3 int,-->
+<!--            level4 int,-->
+<!--            level5 int,-->
+<!--            constraint fk_quiz_results_quiz foreign key(quiz_user_id) references quiz_users(id)-->
+<!--            );-->
+<!--        </sql>-->
+    </changeSet>
+
+</databaseChangeLog>

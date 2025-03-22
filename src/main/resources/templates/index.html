@@ -26,7 +26,7 @@
                     <p>Welcome to REVISION quiz!</p>
                     <p>
                         This webpage was created to help out A level computer science students on their revision.
-                        To get things started you need to register by clicking the register button down below
+                        To get things started you need to Login or Register by clicking the register button down below
                         Once you are in, then the fun truly starts
                         Happy revising !!!
                     </p>
@@ -38,17 +38,15 @@
         <div class="col-10">
             <div class="row justify-content-center align-items-center">
                 <div class="col-sm-12 col-md-12 col-lg-12">
-                    <form th:action="@{/quiz/start}" method="post">
+                    <a th:href="@{/home}">
+                        <input class="btn btn-primary mb-2" type="button" value="Login"/>
+                    </a>
 
-                        <div class="col-sm-6 col-md-6 col-lg-6 p-3">
-                            <div class="col-auto p-1">
-                                <input type="text" name="name" placeholder="enter your name" id="inputName" class="form-control">
-                            </div>
-                            <div class="col-auto p-1">
-                                <input class="btn btn-primary mb-2" type="submit" value="Get Started!"/>
-                            </div>
-                        </div>
-                    </form>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <a th:href="@{/signup}">
+                        <input class="btn btn-primary mb-2" type="button" value="Register"/>
+                    </a>
                 </div>
             </div>
         </div>

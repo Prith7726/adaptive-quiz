@@ -1,0 +1,222 @@
+{
+  "quizName" : "Computer Science March 2024",
+  "questions" :
+  [
+    {
+      "subject": "computer science",
+      "topic": "control unit",
+      "question": "What does the control unit do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "holds all the registers"
+        },
+        {
+          "data": "performs all the calculations in the CPU"
+        },
+        {
+          "data": "coordinates all the components of the cpu",
+          "isAnswer": true
+        }
+      ]
+    },
+    {
+      "subject": "social science",
+      "topic": "courts",
+      "question": "What does the courts do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "holds all the registers"
+        },
+        {
+          "data": "performs all the calculations in the CPU"
+        },
+        {
+          "data": "coordinates all the components of the cpu",
+          "isAnswer": true
+        }
+      ]
+    },
+    {
+      "subject": "social science",
+      "topic": "roads",
+      "question": "What roads are for?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "holds all the registers"
+        },
+        {
+          "data": "performs all the calculations in the CPU"
+        },
+        {
+          "data": "coordinates all the components of the cpu",
+          "isAnswer": true
+        }
+      ]
+    },
+    {
+      "subject": "computer science",
+      "topic": "algorithm unit",
+      "question": "What does the arithmetic logic unit do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "holds the results of arithmatic calculations"
+        },
+        {
+          "data": "performs arithmetic and logical operations on data",
+          "isAnswer": true
+        },
+        {
+          "data": "coordinates all the components of the CPU"
+        }
+      ]
+    },
+    {
+      "subject": "computer science",
+      "topic": "algorithm unit",
+      "question": "What does the accumulator do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "stores the results of the calculations",
+          "isAnswer": true
+        },
+        {
+          "data": "sends control signals to parts of the CPU"
+        },
+        {
+          "data": "decodes instructions"
+        }
+      ]
+    },
+    {
+      "subject": "computer science",
+      "topic": "Structure and function of the processor",
+      "question": "What does the current instruction register do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "stores all the instructions that are to be executed"
+        },
+        {
+          "data": "stores the address of the current instruction to be executed"
+        },
+        {
+          "data": "it temporarily stores the instruction that is currently being decoded or executed",
+          "isAnswer": true
+        }
+      ]
+    },
+    {
+      "subject": "computer science",
+      "topic": "Structure of the processor",
+      "question": "What does the memory address register do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "sends address signals to other parts of the CPU"
+        },
+        {
+          "data": "stores memory addresses for data that is being fetched or stored",
+          "isAnswer": true
+        },
+        {
+          "data": "reads addresses from main memory"
+        }
+      ]
+    },
+    {
+      "subject": "computer science",
+      "topic": "function of the processor",
+      "question": "What does the memory data register do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "temporarily holds the data that is being transferred to and from memory",
+          "isAnswer": true
+        },
+        {
+          "data": "stores the address of the next piece of data to be fetched"
+        },
+        {
+          "data": "sends read or write signals to Main memory"
+        }
+      ]
+    },
+    {
+      "subject": "computer science",
+      "topic": "function of the processor",
+      "question": "Name the three buses in a CPU?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "control, arithmetic, system"
+        },
+        {
+          "data": "data, memory, logic"
+        },
+        {
+          "data": "control, address, data",
+          "isAnswer": true
+        }
+      ]
+    },
+    {
+      "subject": "computer science",
+      "topic": "function of the processor",
+      "question": "What does the address bus do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "carries memory addresses that identify where the data is being read from or written to",
+          "isAnswer": true
+        },
+        {
+          "data": "sends read or write signals to Main memory"
+        },
+        {
+          "data": "stores memory addresses for data that is being fetched or stored"
+        }
+      ]
+    },
+    {
+      "subject": "computer science",
+      "topic": "Structure of the processor",
+      "question": "What does the data bus do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "carries the binary 1's and 0's that make up the actual information being transmitted around the CPU",
+          "isAnswer": true
+        },
+        {
+          "data": "coordinates all the components of the cpu"
+        },
+        {
+          "data": "sends read or write signals to Main memory"
+        }
+      ]
+    },
+    {
+      "subject": "computer science",
+      "topic": "Structure of the processor",
+      "question": "What does the control bus do?",
+      "difficulty": "EASY",
+      "choices": [
+        {
+          "data": "controls all the instructions that are fetched"
+        },
+        {
+          "data": "temporarily stores the instruction that is currently being decoded or executed"
+        },
+        {
+          "data": "carries control and command signals to and from every other component of the CPU",
+          "isAnswer": true
+        }
+      ]
+    }
+  ]
+}

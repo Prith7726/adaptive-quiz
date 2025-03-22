@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Sign up for Quizzzzz</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="error" th:if="${errorMessage != null}" th:text="${errorMessage}" />
+
+
+<h1>Form</h1>
+<form action="#" th:action="@{/signup/addNewUser}" method="post">
+    <div>
+        <label for="username">Username</label> <input type="text" th:name="username" />
+    </div>
+    <div>
+        <label for="password">Password</label> <input type="password" th:name="password" />
+    </div>
+
+    <p><input type="submit" value="Sign up!" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>
