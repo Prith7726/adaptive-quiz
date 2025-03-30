@@ -25,10 +25,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Home</a>
+                        <a class="nav-link active" th:href="${'/home'}" aria-current="page">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Results</a>
+                        <a class="nav-link active" th:href="${'/v1/quiz/results'}" aria-current="page">Results</a>
                     </li>
 
                 </ul>
@@ -64,6 +64,7 @@
                         <ul class="list-group">
                             <li class="list-group-item" th:each="choice : ${question.choices}">
                                 <input class="form-check-input me-1"
+                                       th:disabled="true"
                                        type="radio" th:value="${choice.id}" name="quizItem"
                                        th:checked="${choice.isSelected() == true}">
                                 <label class="form-check-label" th:text="${choice.data}"/>
@@ -82,37 +83,26 @@
                             <input class="btn btn-primary" th:type="button" th:value="Previous"
                                    th:onclick="previousQuery()"
                                    th:disabled="${previousIndex < 0}"/>
-<!--                            <input class="btn btn-primary" type="button" value="Check" th:onclick="checkAnswer()"/>-->
                             <input class="btn btn-primary" th:type="button" th:value="Next"
                                    th:onclick="nextQuery()"
                                    th:disabled="${nextIndex < 0}"/>
-                            <input class="btn btn-primary" th:type="button" th:value="Finish"
-                                   th:onclick="finishQuiz()"/>
+                        </div>
+                        <div class="alert alert-success" role="alert" th:if="${answerStatus==1}">
+                            Answer correct!
+                        </div>
+                        <div class="alert alert-danger" role="alert" th:if="${answerStatus==0}">>
+                            Answer incorrect!
                         </div>
 
                         <script th:inline="javascript">
-                            function updateChoice() {
-                                document.getElementById("queryForm").action = "/v1/quiz/updateChoice";
-                                document.getElementById("queryForm").submit();
-                            }
 
                             function previousQuery() {
-                                document.getElementById("queryForm").action = "/v1/quiz/prevQuery";
+                                document.getElementById("queryForm").action = "/v1/review/quiz/prevQuery";
                                 document.getElementById("queryForm").submit();
                             }
 
                             function nextQuery() {
-                                document.getElementById("queryForm").action = "/v1/quiz/nextQuery";
-                                document.getElementById("queryForm").submit();
-                            }
-
-                            function checkAnswer() {
-                                document.getElementById("queryForm").action = "/v1/quiz/checkAnswer";
-                                document.getElementById("queryForm").submit();
-                            }
-
-                            function finishQuiz() {
-                                document.getElementById("queryForm").action = "/v1/quiz/finishQuiz";
+                                document.getElementById("queryForm").action = "/v1/review/quiz/nextQuery";
                                 document.getElementById("queryForm").submit();
                             }
 

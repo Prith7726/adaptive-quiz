@@ -83,6 +83,26 @@
             ui_index int
             );
         </sql>
+        <sql>
+            create table results (
+            id bigint GENERATED ALWAYS AS identity primary key,
+            quiz_id bigint not null,
+            user_quiz_id bigint not null,
+            quiz_name varchar not null,
+            username varchar not null,
+            total int not null,
+            answered int not null,
+            un_answered int not null,
+            right_answers int not null,
+            wrong_answers int not null,
+            percentage bigint not null,
+            level1 int not null,
+            level2 int not null,
+            level3 int not null,
+            level4 int not null,
+            level5 int not null
+            );
+        </sql>
 
 <!--        <sql>-->
 <!--            create table Question(-->

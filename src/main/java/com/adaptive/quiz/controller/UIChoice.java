@@ -10,5 +10,5 @@ import lombok.Setter;
 public class UIChoice {
     private int id;
     private String data;
-    private boolean selected = false;
+    private boolean selected;
 }

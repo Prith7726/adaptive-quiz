@@ -17,7 +17,19 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private static final String[] AUTH_WHITELIST = {"/management/**", "/logout", "/login", "/signup.html", "/signup/**", "/error", "/", "/index"};
+    private static final String[] AUTH_WHITELIST = {
+            "/management/**",
+            "/logout",
+            "/login",
+            "/signup1.html",
+            "/signup/**",
+            "/error",
+            "/",
+            "/static/**",
+            "/css/**",
+            "/js/**",
+            "/index"
+    };
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -48,7 +60,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/home", true))
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.permitAll()
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/login"))
+                        .logoutSuccessUrl("/"))
                 .build();
     }
 }

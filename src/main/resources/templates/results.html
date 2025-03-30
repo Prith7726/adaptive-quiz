@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" data-bs-theme="dark">
+<head>
+    <title>Adaptive Quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style>
+        body {
+            padding-top: 60px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">A Level Quiz</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{'/home'}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true"></a>
+                    </li>
+
+                </ul>
+                <form class="d-flex" role="search" th:action="@{/logout}">
+                    <div class="p2">
+                        <h3><span class="badge badge-secondary" sec:authentication="name"/></h3>
+                    </div>
+                    <button class="btn btn-outline-success" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="card" th:if="${!resultsFound}">
+        <h5 class="card-header">No Previous Attempts</h5>
+        <div class="card-body">
+            <h5 class="card-title">Sorry, No results found!</h5>
+            <p class="card-text">Complete at least 1 quiz to see the results.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+    <ul class="list-group pt-5" th:each="result : ${results}" th:if="${resultsFound}">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    <label>Quiz Result</label>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    <label>Total Questions</label>
+                                </div>
+                                <div class="col">
+                                    <label th:text="${result.totalQuestions}"/>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    <label>Answered Questions</label>
+                                </div>
+                                <div class="col">
+                                    <label th:text="${result.answeredQuestions}"/>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    <label>UnAnswered Questions</label>
+                                </div>
+                                <div class="col">
+                                    <label th:text="${result.unAnsweredQuestions}"/>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    <label>Correct Answers</label>
+                                </div>
+                                <div class="col">
+                                    <label th:text="${result.rightAnswers}"/>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    <label>Wrong Answers</label>
+                                </div>
+                                <div class="col">
+                                    <label th:text="${result.wrongAnswers}"/>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    <label>Percentage Result</label>
+                                </div>
+                                <div class="col">
+                                    <label th:text="${result.percentageCorrectAnswers}"/>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <div th:id="${'resultGraph' + resultStat.index}" style="width:100%;max-width:700px"></div>
+
+                    <script>
+
+                        Plotly.newPlot("[(${'resultGraph' + resultStat.index})]", [{
+                            x: ["Level1", "level2", "level3", "Level4", "Level5"],
+                            y: [ [(${result.level1})], [(${result.level2})], [(${result.level3})], [(${result.level4})], [(${result.level5})] ],
+                            type: "bar"
+                        }], {title: "[(${result.quizName})]"});
+                    </script>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+
+</body>
+</html>
