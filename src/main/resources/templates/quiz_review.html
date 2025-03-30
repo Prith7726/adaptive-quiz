@@ -30,89 +30,97 @@
                     <li class="nav-item">
                         <a class="nav-link active" th:href="${'/v1/quiz/results'}" aria-current="page">Results</a>
                     </li>
-
                 </ul>
                 <form class="d-flex" role="search" th:action="@{/logout}">
                     <div class="p2">
-                        <h3> <span class="badge badge-secondary" sec:authentication="name"/></h3>
+                        <h3><span class="badge badge-secondary" sec:authentication="name"/></h3>
                     </div>
                     <button class="btn btn-outline-success" type="submit">Logout</button>
                 </form>
             </div>
         </div>
     </nav>
-    <div class="row">
-        <div class="col-10">
-            <div class="row justify-content-center align-items-center">
-                <div class="col-sm-12 col-md-12 col-lg-12 p-3">
-                    <div class="row">
-                        <div class="col-10 border border-primary-subtle rounded-pill">
-                            <h4>Subject: <label th:text="${question.subject}"/></h4>
-                            <h4>Topic: <label th:text="${question.topic}"/></h4>
+    <div class="card" th:if="${reviewDone}">
+        <h5 class="card-header">Review Completed</h5>
+        <div class="card-body">
+            <h5 class="card-title">All the answered questions are reviewed.</h5>
+            <p class="card-text">Please start new quiz for more reviews and results.</p>
+            <a th:href="@{'/home'}" class="btn btn-primary">Start New Quiz</a>
+        </div>
+    </div>
+    <div th:if="${!reviewDone}">
+        <div class="row">
+            <div class="col-10">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-sm-12 col-md-12 col-lg-12 p-3">
+                        <div class="row">
+                            <div class="col-10 border border-primary-subtle rounded-pill">
+                                <h4>Subject: <label th:text="${question.subject}"/></h4>
+                                <h4>Topic: <label th:text="${question.topic}"/></h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-10">
-            <div class="row justify-content-center align-items-center">
-                <div class="col-sm-12 col-md-12 col-lg-12 p-3">
-                    <form th:id="queryForm" th:name="queryForm" method="post">
-                        <h3><label th:text="${question.question}"/></h3>
-                        <ul class="list-group">
-                            <li class="list-group-item" th:each="choice : ${question.choices}">
-                                <input class="form-check-input me-1"
-                                       th:disabled="true"
-                                       type="radio" th:value="${choice.id}" name="quizItem"
-                                       th:checked="${choice.isSelected() == true}">
-                                <label class="form-check-label" th:text="${choice.data}"/>
-                            </li>
-                        </ul>
-                        <input th:type="hidden" th:name="actualQuizId" th:value="${question.actualQuizId}"/>
-                        <input th:type="hidden" th:name="quizId" th:value="${question.quizId}"/>
-                        <input th:type="hidden" th:name="questionId" th:value="${question.questionId}"/>
-                        <input th:type="hidden" th:name="currentIndex" th:value="${question.uiIndex}"/>
-                        <input th:type="hidden" th:name="previousIndex" th:value="${previousIndex}"/>
-                        <input th:type="hidden" th:name="nextIndex" th:value="${nextIndex}"/>
-                        <div>
-                            <h5><label class="" th:text="${answer_status}"/></h5>
-                        </div>
-                        <div>
-                            <input class="btn btn-primary" th:type="button" th:value="Previous"
-                                   th:onclick="previousQuery()"
-                                   th:disabled="${previousIndex < 0}"/>
-                            <input class="btn btn-primary" th:type="button" th:value="Next"
-                                   th:onclick="nextQuery()"
-                                   th:disabled="${nextIndex < 0}"/>
-                        </div>
-                        <div class="alert alert-success" role="alert" th:if="${answerStatus==1}">
-                            Answer correct!
-                        </div>
-                        <div class="alert alert-danger" role="alert" th:if="${answerStatus==0}">>
-                            Answer incorrect!
-                        </div>
+        <div class="row">
+            <div class="col-10">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-sm-12 col-md-12 col-lg-12 p-3">
+                        <form th:id="queryForm" th:name="queryForm" method="post">
+                            <h3><label th:text="${question.question}"/></h3>
+                            <ul class="list-group">
+                                <li class="list-group-item" th:each="choice : ${question.choices}">
+                                    <input class="form-check-input me-1"
+                                           th:disabled="true"
+                                           type="radio" th:value="${choice.id}" name="quizItem"
+                                           th:checked="${choice.isSelected() == true}">
+                                    <label class="form-check-label" th:text="${choice.data}"/>
+                                </li>
+                            </ul>
+                            <input th:type="hidden" th:name="actualQuizId" th:value="${question.actualQuizId}"/>
+                            <input th:type="hidden" th:name="quizId" th:value="${question.quizId}"/>
+                            <input th:type="hidden" th:name="questionId" th:value="${question.questionId}"/>
+                            <input th:type="hidden" th:name="currentIndex" th:value="${question.uiIndex}"/>
+                            <input th:type="hidden" th:name="previousIndex" th:value="${previousIndex}"/>
+                            <input th:type="hidden" th:name="nextIndex" th:value="${nextIndex}"/>
+                            <div>
+                                <h5><label class="" th:text="${answer_status}"/></h5>
+                            </div>
+                            <div>
+                                <input class="btn btn-primary" th:type="button" th:value="Previous"
+                                       th:onclick="previousQuery()"
+                                       th:disabled="${previousIndex < 0}"/>
+                                <input class="btn btn-primary" th:type="button" th:value="Next"
+                                       th:onclick="nextQuery()"
+                                       th:disabled="${nextIndex < 0}"/>
+                            </div>
+                            <div class="alert alert-success" role="alert" th:if="${answerStatus==1}">
+                                Answer correct!
+                            </div>
+                            <div class="alert alert-danger" role="alert" th:if="${answerStatus==0}">>
+                                Answer incorrect!
+                            </div>
 
-                        <script th:inline="javascript">
+                            <script th:inline="javascript">
 
-                            function previousQuery() {
-                                document.getElementById("queryForm").action = "/v1/review/quiz/prevQuery";
-                                document.getElementById("queryForm").submit();
-                            }
+                                function previousQuery() {
+                                    document.getElementById("queryForm").action = "/v1/review/quiz/prevQuery";
+                                    document.getElementById("queryForm").submit();
+                                }
 
-                            function nextQuery() {
-                                document.getElementById("queryForm").action = "/v1/review/quiz/nextQuery";
-                                document.getElementById("queryForm").submit();
-                            }
+                                function nextQuery() {
+                                    document.getElementById("queryForm").action = "/v1/review/quiz/nextQuery";
+                                    document.getElementById("queryForm").submit();
+                                }
 
-                        </script>
-                    </form>
+                            </script>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 
     <nav class="navbar fixed-bottom bg-body-tertiary">
         <div class="container-fluid">

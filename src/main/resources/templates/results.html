@@ -51,7 +51,7 @@
         <div class="card-body">
             <h5 class="card-title">Sorry, No results found!</h5>
             <p class="card-text">Complete at least 1 quiz to see the results.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a th:href="@{'/home'}" class="btn btn-primary">Start New Quiz</a>
         </div>
     </div>
     <ul class="list-group pt-5" th:each="result : ${results}" th:if="${resultsFound}">

@@ -26,6 +26,12 @@ public class ReviewQuizController {
                         Model model) {
         UserQuiz userQuiz = quizService.findUserQuiz(quizId);
         ActualQuiz actualQuiz = quizService.findActualQuizByUserQuizIdAndUiIndex(userQuiz.getId(), questionIndex);
+
+        model.addAttribute("reviewDone", actualQuiz == null);
+        if (actualQuiz == null) {
+            return "quiz_review";
+        }
+
         Question question = quizService.findQuestion(actualQuiz.getQuestionId());
         Integer rightAnswer = question.getChoices().stream().filter(Choice::isAnswer).findFirst().map(Choice::getId).orElse(-1);
         Integer providedAnswer = actualQuiz.getAnswer();
@@ -58,6 +64,12 @@ public class ReviewQuizController {
 
         UserQuiz userQuiz = quizService.findUserQuiz(quizId);
         ActualQuiz actualQuiz = quizService.findActualQuizByUserQuizIdAndUiIndex(userQuiz.getId(), nextIndex);
+
+        model.addAttribute("reviewDone", actualQuiz == null);
+        if (actualQuiz == null) {
+            return "quiz_review";
+        }
+
         Question question = quizService.findQuestion(actualQuiz.getQuestionId());
         Integer rightAnswer = question.getChoices().stream().filter(Choice::isAnswer).findFirst().map(Choice::getId).orElse(-1);
         Integer providedAnswer = actualQuiz.getAnswer();

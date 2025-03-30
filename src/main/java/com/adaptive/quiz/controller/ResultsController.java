@@ -18,7 +18,7 @@ public class ResultsController {
     @RequestMapping("/v1/quiz/results")
     public String quizResults(Model model) {
         List<Result> results = quizService.findLastFiveResults();
-        model.addAttribute("resultsFound", results.size() > 0);
+        model.addAttribute("resultsFound", !results.isEmpty());
         model.addAttribute("results", results);
         return "results";
     }
