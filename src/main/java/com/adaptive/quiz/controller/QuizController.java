@@ -19,6 +19,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class QuizController {
     public static final String SESSION_REGISTER = "register";
+    public static final String DISABLE_PREVIOUS_ACTION = "disablePreviousAction";
+    public static final String DISABLE_NEXT_ACTION = "disableNextAction";
     private final QuizService quizService;
 
     @RequestMapping(value = "/v1/quiz/start")
@@ -47,6 +49,8 @@ public class QuizController {
         model.addAttribute("nextIndex", 1);
         model.addAttribute("question", uiQuestion);
 
+        model.addAttribute(DISABLE_PREVIOUS_ACTION, true);
+        model.addAttribute(DISABLE_NEXT_ACTION, false);
 
         return "quiz";
     }
@@ -73,7 +77,11 @@ public class QuizController {
         int totalQuestions = quizService.getTotalQuestions(quizId) - 1;
 
         model.addAttribute("previousIndex", previousIndex + 1);
-        model.addAttribute("nextIndex", nextIndex < totalQuestions ? nextIndex + 1 : -1);
+        model.addAttribute(DISABLE_PREVIOUS_ACTION, false);
+        nextIndex = nextIndex + 1;
+        model.addAttribute("nextIndex", nextIndex);
+        model.addAttribute(DISABLE_NEXT_ACTION, nextIndex == totalQuestions);
+
         model.addAttribute("question", getUiQuestion(actualQuiz, userQuiz, question, totalQuestions));
 
         return "quiz";
@@ -93,8 +101,11 @@ public class QuizController {
         Question question = quizService.findQuestion(actualQuiz.getQuestionId());
         int totalQuestions = quizService.getTotalQuestions(quizId) - 1;
 
-        model.addAttribute("previousIndex", previousIndex - 1);
-        model.addAttribute("nextIndex", nextIndex > 0 ? nextIndex - 1 : 1);
+        previousIndex = previousIndex - 1;
+        model.addAttribute("previousIndex", previousIndex);
+        model.addAttribute(DISABLE_PREVIOUS_ACTION, previousIndex < 0);
+        model.addAttribute("nextIndex", nextIndex - 1);
+        model.addAttribute(DISABLE_NEXT_ACTION, false);
         model.addAttribute("question", getUiQuestion(actualQuiz, userQuiz, question, totalQuestions));
 
         return "quiz";
@@ -114,7 +125,7 @@ public class QuizController {
 
 
     private UIQuestion getUiQuestion(ActualQuiz actualQuiz, UserQuiz userQuiz, Question question, int totalQuestions) {
-        UIQuestion uiQuestion = UIQuestion.builder()
+        return UIQuestion.builder()
                 .actualQuizId(actualQuiz.getId())
                 .quizId(userQuiz.getQuizId())
                 .questionId(question.getId())
@@ -125,7 +136,6 @@ public class QuizController {
                 .uiIndex(actualQuiz.getUiIndex())
                 .totalQuestions(totalQuestions)
                 .build();
-        return uiQuestion;
     }
 
     static List<UIChoice> getUIChoices(Set<Choice> choices, int answer) {

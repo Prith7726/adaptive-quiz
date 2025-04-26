@@ -72,20 +72,22 @@
                         <input th:type="hidden" th:name="actualQuizId" th:value="${question.actualQuizId}"/>
                         <input th:type="hidden" th:name="quizId" th:value="${question.quizId}"/>
                         <input th:type="hidden" th:name="questionId" th:value="${question.questionId}"/>
-                        <input th:type="hidden" th:name="currentIndex" th:value="${question.uiIndex}"/>
                         <input th:type="hidden" th:name="previousIndex" th:value="${previousIndex}"/>
+                        <input th:type="hidden" th:name="currentIndex" th:value="${question.uiIndex}"/>
                         <input th:type="hidden" th:name="nextIndex" th:value="${nextIndex}"/>
+                        <input th:type="hidden" th:name="disableNextAction" th:value="${disableNextAction}"/>
+                        <input th:type="hidden" th:name="disablePreviousAction" th:value="${disablePreviousAction}"/>
                         <div>
                             <h5><label class="" th:text="${answer_status}"/></h5>
                         </div>
                         <div>
                             <input class="btn btn-primary" th:type="button" th:value="Previous"
                                    th:onclick="previousQuery()"
-                                   th:disabled="${previousIndex < 0}"/>
+                                   th:disabled="${disablePreviousAction}"/>
 <!--                            <input class="btn btn-primary" type="button" value="Check" th:onclick="checkAnswer()"/>-->
                             <input class="btn btn-primary" th:type="button" th:value="Next"
                                    th:onclick="nextQuery()"
-                                   th:disabled="${nextIndex < 0}"/>
+                                   th:disabled="${disableNextAction}"/>
                             <input class="btn btn-primary" th:type="button" th:value="Finish"
                                    th:onclick="finishQuiz()"/>
                         </div>
