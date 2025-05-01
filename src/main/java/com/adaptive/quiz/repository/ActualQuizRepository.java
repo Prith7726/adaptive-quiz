@@ -9,6 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * This is repository interface for {@link ActualQuiz}. As this a child interface to
+ * {@link CrudRepository} which has its implementation to handle database calls.
+ */
 @Repository
 public interface ActualQuizRepository extends CrudRepository<ActualQuiz, Integer> {
     @Query("select a.questionId from ActualQuiz a where a.userQuizId=:userQuizId")

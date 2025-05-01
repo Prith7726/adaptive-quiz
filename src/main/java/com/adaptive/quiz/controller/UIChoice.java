@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Class to hold choice data to render in User interface.
+ */
 @Getter
 @Setter
 @Builder

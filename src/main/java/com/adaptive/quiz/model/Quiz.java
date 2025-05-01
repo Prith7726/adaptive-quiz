@@ -12,6 +12,9 @@ import lombok.Setter;
 
 import java.util.Set;
 
+/**
+ * Quiz table to store quiz data. This has referential integrity with questions table.
+ */
 @Entity
 @Getter
 @Setter

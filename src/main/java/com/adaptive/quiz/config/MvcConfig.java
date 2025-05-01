@@ -6,6 +6,11 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Spring model view controller configurations.
+ * This configuration have overridden methods for letting spring application context to
+ * handle index, signup and login pages. Plus, content negotiations for json and xml.
+ */
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 

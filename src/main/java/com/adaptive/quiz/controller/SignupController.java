@@ -10,6 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Controller class for new user registration/signup.
+ */
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -19,6 +22,16 @@ public class SignupController {
     private final PasswordEncoder passwordEncoder;
     private final JdbcUserDetailsManager jdbcUserDetailsManager;
 
+    /**
+     * New user registration is handled in this method.
+     * Validates username/password for empty.
+     * Once registration is successful then returns to Login page.
+     *
+     * @param username
+     * @param password
+     * @param model
+     * @return
+     */
     @RequestMapping("/signup/addNewUser")
     public String addNewUser(
             String username,

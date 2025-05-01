@@ -9,6 +9,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Model to hold user quiz details like quizId, username and status.
+ */
 @Entity
 @Table(name = "user_quiz")
 @Getter

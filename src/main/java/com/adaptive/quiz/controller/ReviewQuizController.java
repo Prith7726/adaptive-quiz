@@ -15,11 +15,24 @@ import java.util.Objects;
 
 import static com.adaptive.quiz.controller.QuizController.getUIChoices;
 
+/**
+ * Controller class for review quiz answers. This provides read only actions for the quiz.
+ */
 @Controller
 @RequiredArgsConstructor
 public class ReviewQuizController {
     private final QuizService quizService;
 
+    /**
+     * Controller method for start reviewing quiz answers.
+     * In UI (browser page) green banner with text "Correct Answer" for right answer and
+     * red banner with text "Incorrect answer" for wrong answer will be displayed.
+     *
+     * @param quizId
+     * @param questionIndex
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/v1/review/quiz/start")
     public String start(@RequestParam(name = "quizId") int quizId,
                         @RequestParam(name = "qIndex") int questionIndex,
@@ -56,6 +69,17 @@ public class ReviewQuizController {
         return "quiz_review";
     }
 
+    /**
+     * Controller method for action next to reviewing quiz answers.
+     * In UI (browser page) green banner with text "Correct Answer" for right answer and
+     * red banner with text "Incorrect answer" for wrong answer will be displayed.
+     *
+     * @param quizId
+     * @param previousIndex
+     * @param nextIndex
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/v1/review/quiz/nextQuery")
     public String nextQuery(@RequestParam(name = "quizId") int quizId,
                             @RequestParam(name = "previousIndex") int previousIndex,
@@ -95,6 +119,17 @@ public class ReviewQuizController {
         return "quiz_review";
     }
 
+    /**
+     * Controller method for action previous to reviewing quiz answers.
+     * In UI (browser page) green banner with text "Correct Answer" for right answer and
+     * red banner with text "Incorrect answer" for wrong answer will be displayed.
+     *
+     * @param quizId
+     * @param previousIndex
+     * @param nextIndex
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/v1/review/quiz/prevQuery")
     public String prevQuery(@RequestParam(name = "quizId") int quizId,
                             @RequestParam(name = "previousIndex") int previousIndex,

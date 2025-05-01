@@ -9,6 +9,10 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Model class for actual quiz. When user starts a new quiz, a new record is inserted into
+ * actual_quiz table with all the required fields as listed below.
+ */
 @Entity
 @Table(name = "actual_quiz")
 @Getter

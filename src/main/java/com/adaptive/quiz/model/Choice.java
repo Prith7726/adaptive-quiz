@@ -10,6 +10,9 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Choice to store choices for each question.
+ */
 @Entity(name = "choices")
 @Getter
 @Setter

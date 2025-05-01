@@ -9,6 +9,9 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This model is for quiz_overview table. This stores all the details for each quiz.
+ */
 @Getter
 @Setter
 @Entity(name = "quiz_overview")
@@ -26,7 +29,7 @@ public class QuizOverview {
     private String subjects;
     private String topics;
     private String levels;
-    @Column(name="question_count")
+    @Column(name = "question_count")
     private int questionCount;
 
 }

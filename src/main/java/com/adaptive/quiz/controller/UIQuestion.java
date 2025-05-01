@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class to hold question data to render in user interface.
+ */
 @Getter
 @Setter
 @Builder

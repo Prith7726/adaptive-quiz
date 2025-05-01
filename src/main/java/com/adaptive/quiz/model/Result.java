@@ -9,6 +9,10 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Result model. Stores all the result details for the user quiz. This data is used to render results in
+ * user interface.
+ */
 @Entity
 @Table(name = "results")
 @Getter

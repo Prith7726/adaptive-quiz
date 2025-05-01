@@ -13,6 +13,10 @@ import lombok.Setter;
 
 import java.util.Set;
 
+/**
+ * Question table stores all the questions for the quiz.
+ * This table has referential integrity with quiz and choices tables.
+ */
 @Entity
 @Getter
 @Setter

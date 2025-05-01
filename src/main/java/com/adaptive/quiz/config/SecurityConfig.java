@@ -14,9 +14,19 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
+/**
+ * Security is handled in this configuration class. It has whitelist which doesn't need any security,
+ * and all other resources are secured with username/password set into context.
+ * Spring security handles security in this project, hence this class configures the requirement to
+ * tell spring security how to handle security. This reduces code, less maintenance and spring security is
+ * well tested API.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    /**
+     * Whitelist resources which doesn't need security.
+     */
     private static final String[] AUTH_WHITELIST = {
             "/management/**",
             "/logout",
@@ -31,6 +41,12 @@ public class SecurityConfig {
             "/index"
     };
 
+    /**
+     * Password encoder. We use {@link BCryptPasswordEncoder} to encode user password
+     * and store it in database table. Spring security automatically applies encryption and decryption.
+     *
+     * @return passwordEncoder {@link BCryptPasswordEncoder}
+     */
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,6 +60,15 @@ public class SecurityConfig {
         return new JdbcUserDetailsManager(dataSource);
     }
 
+    /**
+     * Important configurations for spring security for this project.
+     * It whitelists few resources such that spring security will not apply security for those resources.
+     * Other resources are secured. Accessing those resources requires valid username/password.
+     * Spring security handles login, hence user credentials stored in application context when login.
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
