@@ -2,7 +2,7 @@
 
 ## IntelliJ IDE setup
 
-- Download the latest IntelliJ Idea software to your computer. (Request a license for IntelliJ Ultimate.)
+- Download the latest IntelliJ Idea software to your computer.
 - Local development requires [Java 17](https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.exe) and [Maven](https://maven.apache.org/download.cgi) (step-by-step guide given [here](https://phoenixnap.com/kb/install-maven-windows)).
 - Checkout the GitHub repo
 ```
