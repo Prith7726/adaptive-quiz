@@ -10,7 +10,9 @@ import com.adaptive.quiz.model.QuizOverview;
 import com.adaptive.quiz.repository.QuizOverviewRepository;
 import com.adaptive.quiz.repository.QuizRepository;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -29,9 +31,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Configuration class for adding new quizzes from resource folder.
  */
 @Configuration
+@Slf4j
 @RequiredArgsConstructor
 public class AddNewQuizConfig {
 
+    public static final String[] FILES = new String[]{"queries_db1.json", "queries_db2.json", "queries_db3.json", "queries_db_error.json"};
     private final QuizRepository quizRepository;
     private final QuizOverviewRepository quizOverviewRepository;
 
@@ -50,8 +54,7 @@ public class AddNewQuizConfig {
      */
     @Bean
     public String getQueries() {
-        String[] files = {"queries_db1.json", "queries_db2.json", "queries_db3.json"};
-        for (String file : files) {
+        for (String file : FILES) {
 
             Quiz byFilename = quizRepository.findByFilename(file);
             if (byFilename != null) {
@@ -62,6 +65,9 @@ public class AddNewQuizConfig {
             QuizData quizData;
             try (Reader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
                 quizData = (new Gson().fromJson(reader, QuizData.class));
+            } catch (JsonSyntaxException e) {
+                log.error("Issues with json file {}", file, e);
+                continue;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
