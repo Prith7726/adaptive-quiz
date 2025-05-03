@@ -15,8 +15,15 @@ git clone https://github.com/Prith7726/adaptive-quiz.git
 ## Postgres
 - Install Postgres database server with username: postgres and password: password and port 5431.
 
+
+## Build application
+- execute mvn clean install
+
 ## Running the Project locally
 **Application:**
 
 - Go to `Edit Configurations...`  in Run Configurations drop down.
 - Create a new Springboot configuration and select AdaptiveQuizApplication.
+
+## Application URL
+- http://localhost:9898
